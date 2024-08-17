@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Selection</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navigation">
+            <a href="#" class="nav-link active">Appetizers</a>
+            <a href="#" class="nav-link">Main courses</a>
+            <a href="#" class="nav-link">Pizza</a>
+        </nav>
+    </header>
+
+    <main class="menu-container">
+        <h2 class="menu-category">Appetizers</h2>
+        <div class="food-list">
+            <div class="food-item" onclick="openModal('Bruschetta', 8.00)">
+                <img src="bruschetta.jpg" alt="Bruschetta">
+                <div class="food-info">
+                    <h3>Bruschetta with tomatoes, garlic, and basil</h3>
+                    <div class="tags">
+                        <span class="tag">Gluten</span>
+                        <span class="tag">Bestseller</span>
+                    </div>
+                    <p class="price">$8.00</p>
+                    <button class="order-btn">Order</button>
+                </div>
+            </div>
+            <div class="food-item" onclick="openModal('Antipasti', 15.00)">
+                <img src="antipasti.jpg" alt="Antipasti">
+                <div class="food-info">
+                    <h3>Antipasti - a plate with various cold cuts and cheeses</h3>
+                    <div class="tags">
+                        <span class="tag">New</span>
+                    </div>
+                    <p class="price">$15.00</p>
+                    <button class="order-btn">Order</button>
+                </div>
+            </div>
+            <div class="food-item" onclick="openModal('Caprese Salad', 10.00)">
+                <img src="caprese.jpg" alt="Caprese Salad">
+                <div class="food-info">
+                    <h3>Caprese Salad</h3>
+                    <p class="price">$10.00</p>
+                    <button class="order-btn">Order</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-food-name"></h2>
+            <p id="modal-food-price"></p>
+            <div class="quantity-selector">
+                <button onclick="decreaseQuantity()">-</button>
+                <span id="quantity">1</span>
+                <button onclick="increaseQuantity()">+</button>
+            </div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="cart-summary">
+            <div class="cart-icon">
+                <span>2</span>
+            </div>
+            <p class="total-price">$5.00</p>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
