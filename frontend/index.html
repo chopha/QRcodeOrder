@@ -23,23 +23,16 @@
                 <img src="bruschetta.jpg" alt="Bruschetta">
                 <div class="food-info">
                     <h3>Bruschetta with tomatoes, garlic, and basil</h3>
-                    <div class="tags">
-                        <span class="tag">Gluten</span>
-                        <span class="tag">Bestseller</span>
-                    </div>
                     <p class="price">$8.00</p>
-                    <button class="order-btn">Order</button>
+                    <button class="add-to-cart-btn" onclick="addToCart('Bruschetta', 8.00)">Add to Cart</button>
                 </div>
             </div>
             <div class="food-item" onclick="openModal('Antipasti', 15.00)">
                 <img src="antipasti.jpg" alt="Antipasti">
                 <div class="food-info">
                     <h3>Antipasti - a plate with various cold cuts and cheeses</h3>
-                    <div class="tags">
-                        <span class="tag">New</span>
-                    </div>
                     <p class="price">$15.00</p>
-                    <button class="order-btn">Order</button>
+                    <button class="add-to-cart-btn" onclick="addToCart('Antipasti', 15.00)">Add to Cart</button>
                 </div>
             </div>
             <div class="food-item" onclick="openModal('Caprese Salad', 10.00)">
@@ -47,37 +40,75 @@
                 <div class="food-info">
                     <h3>Caprese Salad</h3>
                     <p class="price">$10.00</p>
-                    <button class="order-btn">Order</button>
+                    <button class="add-to-cart-btn" onclick="addToCart('Caprese Salad', 10.00)">Add to Cart</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modal-food-name"></h2>
-            <p id="modal-food-price"></p>
-            <div class="quantity-selector">
-                <button onclick="decreaseQuantity()">-</button>
-                <span id="quantity">1</span>
-                <button onclick="increaseQuantity()">+</button>
-            </div>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-
     <footer class="footer">
         <div class="cart-summary">
             <div class="cart-icon">
-                <span>2</span>
+                <span id="cart-count">0</span>
             </div>
-            <p class="total-price">$5.00</p>
-            <button class="checkout-btn">Checkout</button>
+            <p class="total-price">$<span id="total-price">0.00</span></p>
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // 장바구니를 관리할 변수
+        let cart = [];
+
+        // 장바구니에 상품 추가
+        function addToCart(name, price) {
+            let item = cart.find(product => product.name === name);
+            if (item) {
+                item.quantity += 1;
+            } else {
+                cart.push({ name: name, price: price, quantity: 1 });
+            }
+            updateCartSummary();
+        }
+
+        // 장바구니 요약 업데이트
+        function updateCartSummary() {
+            const cartCount = document.getElementById('cart-count');
+            const totalPrice = document.getElementById('total-price');
+            
+            let totalItems = 0;
+            let totalCost = 0;
+
+            cart.forEach(item => {
+                totalItems += item.quantity;
+                totalCost += item.price * item.quantity;
+            });
+
+            cartCount.textContent = totalItems;
+            totalPrice.textContent = totalCost.toFixed(2);
+        }
+
+        // Checkout 버튼 클릭 시
+        function checkout() {
+            fetch('/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cart })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Order placed successfully!');
+                    cart = [];
+                    updateCartSummary();
+                } else {
+                    alert('Failed to place order.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
